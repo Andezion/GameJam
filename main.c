@@ -18,7 +18,7 @@ void loadCoursor(SDL_Texture **cursorTexture, SDL_Renderer *renderer) {
 
 
 
-// Рисует Курсор (пока белый квадрат)
+// Рисует Курсор
 void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
 
     int x, y;
