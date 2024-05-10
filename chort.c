@@ -8,6 +8,7 @@ SDL_Rect spawn_chort(SDL_Rect base) {
     SDL_Rect chort = base;
     chort.h = 30;
     chort.w = 30;
+    return chort;
 }
 
 int intersect(SDL_Rect r1, SDL_Rect r2) {

@@ -4,7 +4,7 @@
 
 #ifndef GAMEJAM_CHORT_H
 #define GAMEJAM_CHORT_H
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 SDL_Rect spawn_chort(SDL_Rect base);
 

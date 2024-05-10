@@ -1,7 +1,7 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 #include "chort.h"
 
 // Константы
@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
                 break;
             case game:
                 if (update_chort((SDL_Rect){350, 250, 80, 80}, &chort))
-                    state = gameOver;
+                    //state = gameOver;
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
                 set_background(renderer);
