@@ -1,6 +1,7 @@
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL.h>
+
 
 int HEIGHT = 800;
 int WIDTH = 600;
@@ -84,35 +85,31 @@ void set_background(SDL_Renderer *renderer)
             }
             else
             {
-                if(pick == 1)
-                {
-                    SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                else if(pick == 2)
-                {
-                    SDL_SetRenderDrawColor(renderer, 43, 33, 3, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                else if(pick == 3)
-                {
-                    SDL_SetRenderDrawColor(renderer, 12, 25, 11, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                else if(pick == 4)
-                {
-                    SDL_SetRenderDrawColor(renderer, 11, 19, 25, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                else if(pick == 5)
-                {
-                    SDL_SetRenderDrawColor(renderer, 20, 16, 25, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                else
-                {
-                    SDL_SetRenderDrawColor(renderer, 25, 16, 20, 255);
-                    SDL_RenderFillRect(renderer, &cell);
+                switch(pick) {
+                    case (1):
+                        SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
+                        SDL_RenderFillRect(renderer, &cell);
+                        break;
+                    case (2):
+                        SDL_SetRenderDrawColor(renderer, 43, 33, 3, 255);
+                        SDL_RenderFillRect(renderer, &cell);
+                        break;
+                    case (3):
+                        SDL_SetRenderDrawColor(renderer, 12, 25, 11, 255);
+                        SDL_RenderFillRect(renderer, &cell);
+                        break;
+                    case (4):
+                        SDL_SetRenderDrawColor(renderer, 11, 19, 25, 255);
+                        SDL_RenderFillRect(renderer, &cell);
+                        break;
+                    case (5):
+                        SDL_SetRenderDrawColor(renderer, 20, 16, 25, 255);
+                        SDL_RenderFillRect(renderer, &cell);
+                        break;
+                    default:
+                        SDL_SetRenderDrawColor(renderer, 25, 16, 20, 255);
+                        SDL_RenderFillRect(renderer, &cell);
+                        break;
                 }
             }
 
