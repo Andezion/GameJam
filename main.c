@@ -9,7 +9,7 @@ int WIDTH = 600;
 int CURSORSIZE = 32;
 
 void loadCoursor(SDL_Texture **cursorTexture, SDL_Renderer *renderer) {
-    SDL_Surface *cursorSurface = IMG_Load("./Sprites/Coursor.png");
+    SDL_Surface *cursorSurface = IMG_Load("../Sprites/Coursor.png");
     *cursorTexture = SDL_CreateTextureFromSurface(renderer, cursorSurface);
     int w = 32, h = 32;
     SDL_FreeSurface(cursorSurface);
