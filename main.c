@@ -154,6 +154,7 @@ void drawMainObjects(SDL_Renderer *renderer){
 int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_ShowCursor(SDL_DISABLE);
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
