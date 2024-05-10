@@ -1,23 +1,36 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL_image.h>
 
 // Константы
 int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
 
-void drawCoursor(SDL_Renderer *renderer) {
+void loadCoursor(SDL_Texture *cursorTexture, SDL_Renderer *renderer) {
+    SDL_Surface *cursorSurface = IMG_Load("./Sprites/Coursor.png");
+    cursorTexture = SDL_CreateTextureFromSurface(renderer, cursorSurface);
+    int w = 32, h = 32;
+    SDL_FreeSurface(cursorSurface);
+    SDL_QueryTexture(cursorTexture, NULL, NULL, &w, &h);
+}
+
+
+
+// Рисует Курсор (пока белый квадрат)
+void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
     int x, y;
     SDL_GetMouseState(&x, &y);
-    Uint8 r, g, b, a;
+    SDL_Rect cursor = {x, y, CURSORSIZE, CURSORSIZE};
+    /*Uint8 r, g, b, a;
     // Запоминаем цвет
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
-    SDL_Rect cursor = {x, y, CURSORSIZE, CURSORSIZE};
     SDL_SetRenderDrawColor(renderer, 255,255,255, 255);
     SDL_RenderFillRect(renderer, &cursor);
 
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);*/
+    SDL_RenderCopy(renderer, cursorTexture, NULL, &cursor);
 }
 
 // Рисует задний фон
@@ -155,6 +168,7 @@ int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_ShowCursor(SDL_DISABLE);
+
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
@@ -170,6 +184,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Загружаем Изображения
+    SDL_Texture *cursorTexture;
+    loadCoursor(cursorTexture, renderer);
+
     SDL_Event event;
 
     int running = 1;
@@ -184,9 +202,11 @@ int main(int argc, char *argv[])
         }
 
         SDL_RenderClear(renderer);
+        // Тут начало отрисовки
         set_background(renderer);
         drawMainObjects(renderer);
-        drawCoursor(renderer);
+        drawCoursor(renderer, cursorTexture);
+        // Тут конец отрисовки
         SDL_RenderPresent(renderer);
     }
 
