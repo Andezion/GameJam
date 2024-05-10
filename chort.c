@@ -3,12 +3,21 @@
 //
 
 #include "chort.h"
+#include <stdio.h>
+
+SDL_Texture *texture_robot[4];
+SDL_Texture *texture_man[4];
+
+const char *robot[4] = {"robot1.bmp", "robot2.bmp", "robot1.bmp", "robot3.bmp"};
+const char *man[4] = {"man1.bmp", "man2.bmp", "man1.bmp", "man3.bmp"};
 
 struct chort_t spawn_chort(SDL_Rect base) {
     struct chort_t chort;
     chort.chort = base;
     chort.chort.h = 30;
     chort.chort.w = 30;
+    chort.num = 0;
+    chort.dead = 0;
     return chort;
 }
 
@@ -51,15 +60,38 @@ SDL_Point find_path(SDL_Rect castle, struct chort_t  *chort) {
 
 }
 
+int loadTextureArray(SDL_Renderer* renderer, const char** fileNames, int arraySize, SDL_Texture** textureArray)
+{
+    for(int i = 0; i < arraySize; i++)
+    {
+        SDL_Surface* surface = SDL_LoadBMP(fileNames[i]);
+        if (surface == NULL)
+        {
+            printf("Error loading image %d: %s\n", i, SDL_GetError());
+            SDL_DestroyRenderer(renderer);
+            return 1;
+        }
+        textureArray[i] = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
+        if (textureArray[i] == NULL)
+        {
+            printf("Error creating texture for image %d: %s\n", i, SDL_GetError());
+            SDL_DestroyRenderer(renderer);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int update_chort(SDL_Rect castle, struct chort_t  *chort) {
-    
+    if (chort->dead) return 0;
     if (intersect(castle, chort->chort)) {
         return 1;
     }
     SDL_Point mouse;
     SDL_GetMouseState(&mouse.x, &mouse.y);
     if (contains(chort->chort, mouse)) {
-        chort->chort.x = 99999;
+        chort->dead = 1;
     }
     SDL_Point kierunek = find_path(castle, chort);
     chort->chort.x += kierunek.x * 5;
@@ -67,7 +99,10 @@ int update_chort(SDL_Rect castle, struct chort_t  *chort) {
     return 0;
 }
 
-void draw_chort(SDL_Renderer *r, struct chort_t *chort) {
-    SDL_SetRenderDrawColor(r, 255, 255, 0, 1);
-    SDL_RenderFillRect(r, chort);
+void draw_chort(SDL_Renderer *r, struct chort_t *chort)
+{
+    if (chort->dead) return;
+    loadTextureArray(r, robot, 4, texture_robot);
+    SDL_RenderCopy(r, texture_robot[chort->num % 4], NULL, &chort->chort);
+    chort->num = (chort->num + 1) % 4;
 }

@@ -9,6 +9,7 @@ int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
 
+int pick;
 
 enum STATE {mainMenu, game, gameOver};
 
@@ -22,8 +23,8 @@ void loadTexture(SDL_Texture **Texture, SDL_Renderer *renderer, char* fileName) 
 
 
 // Рисует Курсор (пока белый квадрат)
-void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
-
+void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture)
+{
     int x, y;
     SDL_GetMouseState(&x, &y);
     SDL_Rect cursor = {x-CURSORSIZE/2, y-CURSORSIZE/2, CURSORSIZE, CURSORSIZE};
@@ -38,7 +39,7 @@ void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
 }
 
 // Рисует задний фон
-void set_background(SDL_Renderer *renderer)
+void set_background(SDL_Renderer *renderer, int pick)
 {
     int cell_size = 20;
 
@@ -53,8 +54,6 @@ void set_background(SDL_Renderer *renderer)
         {
             cell.x = i * cell_size;
             cell.y = j * cell_size;
-
-            int pick = 1 + rand() % 6;
 
             if(i == 0 || j == 0 || i == 39 || j == 29)
             {
@@ -101,31 +100,69 @@ void set_background(SDL_Renderer *renderer)
 // Рисует объекты (4 базы и крепость)
 void drawMainObjects(SDL_Renderer *renderer)
 {
+    SDL_Surface* surface = SDL_LoadBMP("spawn.bmp");
+    if (surface == NULL)
+    {
+        printf("Error loading image: %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        return;
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    if (texture == NULL)
+    {
+        printf("Error creating texture for image: %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        return;
+    }
+
     SDL_Rect base1 = {50, 50, 50, 50};
-    SDL_RenderFillRect(renderer, &base1);
+    SDL_RenderCopy(renderer, texture, 0, &base1);
+
     SDL_Rect base2 = {700, 50, 50, 50};
-    SDL_RenderFillRect(renderer, &base2);
+    SDL_RenderCopy(renderer, texture, 0, &base2);
+
     SDL_Rect base3 = {50, 500, 50, 50};
-    SDL_RenderFillRect(renderer, &base3);
+    SDL_RenderCopy(renderer, texture, 0, &base3);
+
     SDL_Rect base4 = {700, 500, 50, 50};
-    SDL_RenderFillRect(renderer, &base4);
+    SDL_RenderCopy(renderer, texture, 0, &base4);
+
+    SDL_Surface *dupka = SDL_LoadBMP("dante.bmp");
+    if (dupka == NULL)
+    {
+        printf("Error loading image: %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        return;
+    }
+
+    SDL_Texture *texturka = SDL_CreateTextureFromSurface(renderer, dupka);
+    SDL_FreeSurface(dupka);
+    if (texturka == NULL)
+    {
+        printf("Error creating texture for image: %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        return;
+    }
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
-    SDL_RenderFillRect(renderer, &main_fortress);
+    SDL_RenderCopy(renderer, texturka, 0, &main_fortress);
 }
 
 
-void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start, SDL_Texture *cat) {
+void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start, SDL_Texture *cat)
+{
     SDL_Rect LogoPos = {200, 10, 480,32};
     SDL_RenderCopy(renderer, logo, NULL, &LogoPos);
     SDL_Rect StartPos = {160, 100, 480,32};
     SDL_RenderCopy(renderer, start, NULL, &StartPos);
     SDL_Rect CatPos = {160, 142, 480,480};
     SDL_RenderCopy(renderer, cat, NULL, &CatPos);
-
 }
 
-void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver) {
+void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver)
+{
     SDL_Rect overPos = {0, 0, 800,600};
     Uint8 r, g, b, a;
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
@@ -134,9 +171,7 @@ void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver) {
     SDL_RenderCopy(renderer, gameOver, NULL, &overPos);
 
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
-
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -144,6 +179,8 @@ int main(int argc, char *argv[])
     IMG_Init(IMG_INIT_PNG);
     enum STATE state = mainMenu;
     SDL_ShowCursor(SDL_DISABLE);
+
+    pick = 1 + rand() % 6;
 
     struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
@@ -191,7 +228,9 @@ int main(int argc, char *argv[])
                 int x, y;
                 SDL_GetMouseState(&x, &y);
                 if (x > 160 && x < 640 && y > 100 && y < 132)
+                {
                     state = game;
+                }
             }
         }
 
@@ -210,7 +249,7 @@ int main(int argc, char *argv[])
                     state = gameOver;
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
-                set_background(renderer);
+                set_background(renderer, pick);
                 drawMainObjects(renderer);
                 drawCoursor(renderer, cursorTexture);
                 draw_chort(renderer, &chort);
