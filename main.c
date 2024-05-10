@@ -8,29 +8,30 @@ int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
 
-void loadCoursor(SDL_Texture *cursorTexture, SDL_Renderer *renderer) {
+void loadCoursor(SDL_Texture **cursorTexture, SDL_Renderer *renderer) {
     SDL_Surface *cursorSurface = IMG_Load("./Sprites/Coursor.png");
-    cursorTexture = SDL_CreateTextureFromSurface(renderer, cursorSurface);
+    *cursorTexture = SDL_CreateTextureFromSurface(renderer, cursorSurface);
     int w = 32, h = 32;
     SDL_FreeSurface(cursorSurface);
-    SDL_QueryTexture(cursorTexture, NULL, NULL, &w, &h);
+    //SDL_QueryTexture(cursorTexture, NULL, NULL, &w, &h);
 }
 
 
 
 // Рисует Курсор (пока белый квадрат)
 void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
+
     int x, y;
     SDL_GetMouseState(&x, &y);
     SDL_Rect cursor = {x, y, CURSORSIZE, CURSORSIZE};
-    /*Uint8 r, g, b, a;
+    Uint8 r, g, b, a;
     // Запоминаем цвет
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
     SDL_SetRenderDrawColor(renderer, 255,255,255, 255);
-    SDL_RenderFillRect(renderer, &cursor);
-
-    SDL_SetRenderDrawColor(renderer, r, g, b, a);*/
+    //SDL_RenderFillRect(renderer, &cursor);
     SDL_RenderCopy(renderer, cursorTexture, NULL, &cursor);
+
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
 // Рисует задний фон
@@ -167,6 +168,7 @@ void drawMainObjects(SDL_Renderer *renderer){
 int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
+    IMG_Init(IMG_INIT_PNG);
     SDL_ShowCursor(SDL_DISABLE);
 
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
@@ -180,13 +182,14 @@ int main(int argc, char *argv[])
     {
         printf("Error in creating renderer: %s\n", SDL_GetError());
         SDL_DestroyWindow(window);
+
         SDL_Quit();
         return 1;
     }
 
     // Загружаем Изображения
-    SDL_Texture *cursorTexture;
-    loadCoursor(cursorTexture, renderer);
+    SDL_Texture *cursorTexture = NULL;
+    loadCoursor(&cursorTexture, renderer);
 
     SDL_Event event;
 
@@ -212,6 +215,8 @@ int main(int argc, char *argv[])
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    SDL_DestroyTexture(cursorTexture);
+    IMG_Quit();
     SDL_Quit();
 
     return 0;
