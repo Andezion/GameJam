@@ -260,12 +260,15 @@ int main(int argc, char *argv[])
                 SDL_RenderClear(renderer);
                 drawGameOver(renderer, gameOverScreen);
                 SDL_RenderPresent(renderer);
+                SDL_Delay(2500);
+                goto exit;
+                exit(-1);
                 break;
             default:
                 exit(-5);
         }
     }
-
+    exit:
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(cursorTexture);
