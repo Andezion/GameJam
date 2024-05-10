@@ -100,7 +100,6 @@ void set_background(SDL_Renderer *renderer)
 // Рисует объекты (4 базы и крепость)
 void drawMainObjects(SDL_Renderer *renderer)
 {
-
     SDL_Rect base1 = {50, 50, 50, 50};
     SDL_RenderFillRect(renderer, &base1);
     SDL_Rect base2 = {700, 50, 50, 50};
