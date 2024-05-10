@@ -115,11 +115,13 @@ void drawMainObjects(SDL_Renderer *renderer)
 }
 
 
-void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start) {
+void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start, SDL_Texture *cat) {
     SDL_Rect LogoPos = {200, 10, 480,32};
     SDL_RenderCopy(renderer, logo, NULL, &LogoPos);
     SDL_Rect StartPos = {160, 100, 480,32};
     SDL_RenderCopy(renderer, start, NULL, &StartPos);
+    SDL_Rect CatPos = {160, 142, 480,480};
+    SDL_RenderCopy(renderer, cat, NULL, &CatPos);
 
 }
 
@@ -150,9 +152,12 @@ int main(int argc, char *argv[])
     SDL_Texture *cursorTexture = NULL;
     SDL_Texture *logo = NULL;
     SDL_Texture *start = NULL;
+    SDL_Texture *cat = NULL;
     loadTexture(&cursorTexture, renderer, "../Sprites/Coursor.png");
     loadTexture(&logo, renderer, "../Sprites/Team Logo.png");
     loadTexture(&start, renderer, "../Sprites/StartGame.png");
+    loadTexture(&cat, renderer, "../Sprites/cat.png");
+
 
     SDL_Event event;
 
@@ -180,7 +185,7 @@ int main(int argc, char *argv[])
             case mainMenu:
                 //state = game;
                 SDL_RenderClear(renderer);
-                drawMainMenu(renderer, logo, start);
+                drawMainMenu(renderer, logo, start, cat);
                 drawCoursor(renderer, cursorTexture);
                 SDL_RenderPresent(renderer);
                 break;
@@ -204,6 +209,8 @@ int main(int argc, char *argv[])
     SDL_DestroyWindow(window);
     SDL_DestroyTexture(cursorTexture);
     SDL_DestroyTexture(logo);
+    SDL_DestroyTexture(start);
+    SDL_DestroyTexture(cat);
     IMG_Quit();
     SDL_Quit();
 
