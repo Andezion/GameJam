@@ -1,35 +1,22 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL_image.h>
 
 // Константы
 int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
 
-void loadCoursor(SDL_Texture **cursorTexture, SDL_Renderer *renderer) {
-    SDL_Surface *cursorSurface = IMG_Load("./Sprites/Coursor.png");
-    *cursorTexture = SDL_CreateTextureFromSurface(renderer, cursorSurface);
-    int w = 32, h = 32;
-    SDL_FreeSurface(cursorSurface);
-    //SDL_QueryTexture(cursorTexture, NULL, NULL, &w, &h);
-}
-
-
-
-// Рисует Курсор (пока белый квадрат)
-void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
-
+void drawCoursor(SDL_Renderer *renderer)
+{
     int x, y;
     SDL_GetMouseState(&x, &y);
-    SDL_Rect cursor = {x, y, CURSORSIZE, CURSORSIZE};
     Uint8 r, g, b, a;
     // Запоминаем цвет
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_Rect cursor = {x, y, CURSORSIZE, CURSORSIZE};
     SDL_SetRenderDrawColor(renderer, 255,255,255, 255);
-    //SDL_RenderFillRect(renderer, &cursor);
-    SDL_RenderCopy(renderer, cursorTexture, NULL, &cursor);
+    SDL_RenderFillRect(renderer, &cursor);
 
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
@@ -37,61 +24,7 @@ void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture) {
 // Рисует задний фон
 void set_background(SDL_Renderer *renderer)
 {
-    /*int size = 25;
-    SDL_Rect cell;
-    cell.w = size;
-    cell.h = size;
-
-    for(int i = 0; i <= 32; i++)
-    {
-        for(int j = 0; j <= 24; j++)
-        {
-            cell.x = 800 + i * size;
-            cell.y = 600 + j * size;
-            
-            int type = 1 + rand() % 6;
-            if(i == 0 || j == 0)
-            {
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                SDL_RenderFillRect(renderer, &cell);
-            }
-            else
-            {
-                if(type == 1)
-                {
-                    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 2)
-                {
-                    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 3)
-                {
-                    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 4)
-                {
-                    SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 5)
-                {
-                    SDL_SetRenderDrawColor(renderer, 250, 250, 250, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 6)
-                {
-                    SDL_SetRenderDrawColor(renderer, 70, 70, 70, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-            }
-        }
-    }*/
     int cell_size = 20;
-
 
     SDL_Rect cell;
     cell.w = cell_size;
@@ -114,7 +47,8 @@ void set_background(SDL_Renderer *renderer)
             }
             else
             {
-                switch(pick) {
+                switch(pick)
+                {
                     case (1):
                         SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
                         SDL_RenderFillRect(renderer, &cell);
@@ -149,7 +83,8 @@ void set_background(SDL_Renderer *renderer)
 }
 
 // Рисует объекты (4 базы и крепость)
-void drawMainObjects(SDL_Renderer *renderer){
+void drawMainObjects(SDL_Renderer *renderer)
+{
 
     SDL_Rect base1 = {50, 50, 50, 50};
     SDL_RenderFillRect(renderer, &base1);
@@ -162,15 +97,12 @@ void drawMainObjects(SDL_Renderer *renderer){
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderFillRect(renderer, &main_fortress);
-    return;
 }
 
 int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
-    IMG_Init(IMG_INIT_PNG);
     SDL_ShowCursor(SDL_DISABLE);
-
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
@@ -182,14 +114,9 @@ int main(int argc, char *argv[])
     {
         printf("Error in creating renderer: %s\n", SDL_GetError());
         SDL_DestroyWindow(window);
-
         SDL_Quit();
         return 1;
     }
-
-    // Загружаем Изображения
-    SDL_Texture *cursorTexture = NULL;
-    loadCoursor(&cursorTexture, renderer);
 
     SDL_Event event;
 
@@ -205,18 +132,14 @@ int main(int argc, char *argv[])
         }
 
         SDL_RenderClear(renderer);
-        // Тут начало отрисовки
         set_background(renderer);
         drawMainObjects(renderer);
-        drawCoursor(renderer, cursorTexture);
-        // Тут конец отрисовки
+        drawCoursor(renderer);
         SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_DestroyTexture(cursorTexture);
-    IMG_Quit();
     SDL_Quit();
 
     return 0;
