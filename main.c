@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
     enum STATE state = mainMenu;
     SDL_ShowCursor(SDL_DISABLE);
 
-    SDL_Rect chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
+    struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
