@@ -119,6 +119,26 @@ void set_background(SDL_Renderer *renderer)
     }
 }
 
+void drawMainObjects(SDL_Renderer *renderer){
+    SDL_RenderClear(renderer);
+    set_background(renderer);
+
+    SDL_Rect base1 = {50, 50, 50, 50};
+    SDL_RenderFillRect(renderer, &base1);
+    SDL_Rect base2 = {700, 50, 50, 50};
+    SDL_RenderFillRect(renderer, &base2);
+    SDL_Rect base3 = {50, 500, 50, 50};
+    SDL_RenderFillRect(renderer, &base3);
+    SDL_Rect base4 = {700, 500, 50, 50};
+    SDL_RenderFillRect(renderer, &base4);
+
+    SDL_Rect main_fortress = {350, 250, 80, 80};
+    SDL_RenderFillRect(renderer, &main_fortress);
+
+    SDL_RenderPresent(renderer);
+    return;
+}
+
 int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -150,22 +170,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        SDL_RenderClear(renderer);
-        set_background(renderer);
-
-        SDL_Rect base1 = {50, 50, 50, 50};
-        SDL_RenderFillRect(renderer, &base1);
-        SDL_Rect base2 = {700, 50, 50, 50};
-        SDL_RenderFillRect(renderer, &base2);
-        SDL_Rect base3 = {50, 500, 50, 50};
-        SDL_RenderFillRect(renderer, &base3);
-        SDL_Rect base4 = {700, 500, 50, 50};
-        SDL_RenderFillRect(renderer, &base4);
-
-        SDL_Rect main_fortress = {350, 250, 80, 80};
-        SDL_RenderFillRect(renderer, &main_fortress);
-
-        SDL_RenderPresent(renderer);
+        drawMainObjects(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
