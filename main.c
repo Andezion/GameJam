@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <SDL.h>
 
 int HEIGHT = 800;
@@ -67,6 +66,7 @@ void set_background(SDL_Renderer *renderer)
     SDL_Rect cell;
     cell.w = cell_size;
     cell.h = cell_size;
+
 
     for(int i = 0; i < 40; i++)
     {
@@ -156,8 +156,17 @@ int main(int argc, char *argv[])
         SDL_RenderClear(renderer);
         set_background(renderer);
 
-        SDL_Rect rectangle = {200, 200, 100, 100};
-        SDL_RenderFillRect(renderer, &rectangle);
+        SDL_Rect base1 = {50, 50, 50, 50};
+        SDL_RenderFillRect(renderer, &base1);
+        SDL_Rect base2 = {700, 50, 50, 50};
+        SDL_RenderFillRect(renderer, &base2);
+        SDL_Rect base3 = {50, 500, 50, 50};
+        SDL_RenderFillRect(renderer, &base3);
+        SDL_Rect base4 = {700, 500, 50, 50};
+        SDL_RenderFillRect(renderer, &base4);
+
+        SDL_Rect main_fortress = {350, 250, 80, 80};
+        SDL_RenderFillRect(renderer, &main_fortress);
 
         SDL_RenderPresent(renderer);
     }
