@@ -7,7 +7,8 @@ int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
 
-void drawCoursor(SDL_Renderer *renderer) {
+void drawCoursor(SDL_Renderer *renderer)
+{
     int x, y;
     SDL_GetMouseState(&x, &y);
     Uint8 r, g, b, a;
@@ -23,61 +24,7 @@ void drawCoursor(SDL_Renderer *renderer) {
 // Рисует задний фон
 void set_background(SDL_Renderer *renderer)
 {
-    /*int size = 25;
-    SDL_Rect cell;
-    cell.w = size;
-    cell.h = size;
-
-    for(int i = 0; i <= 32; i++)
-    {
-        for(int j = 0; j <= 24; j++)
-        {
-            cell.x = 800 + i * size;
-            cell.y = 600 + j * size;
-            
-            int type = 1 + rand() % 6;
-            if(i == 0 || j == 0)
-            {
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                SDL_RenderFillRect(renderer, &cell);
-            }
-            else
-            {
-                if(type == 1)
-                {
-                    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 2)
-                {
-                    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 3)
-                {
-                    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 4)
-                {
-                    SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 5)
-                {
-                    SDL_SetRenderDrawColor(renderer, 250, 250, 250, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-                if(type == 6)
-                {
-                    SDL_SetRenderDrawColor(renderer, 70, 70, 70, 255);
-                    SDL_RenderFillRect(renderer, &cell);
-                }
-            }
-        }
-    }*/
     int cell_size = 20;
-
 
     SDL_Rect cell;
     cell.w = cell_size;
@@ -100,7 +47,8 @@ void set_background(SDL_Renderer *renderer)
             }
             else
             {
-                switch(pick) {
+                switch(pick)
+                {
                     case (1):
                         SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
                         SDL_RenderFillRect(renderer, &cell);
@@ -135,7 +83,8 @@ void set_background(SDL_Renderer *renderer)
 }
 
 // Рисует объекты (4 базы и крепость)
-void drawMainObjects(SDL_Renderer *renderer){
+void drawMainObjects(SDL_Renderer *renderer)
+{
 
     SDL_Rect base1 = {50, 50, 50, 50};
     SDL_RenderFillRect(renderer, &base1);
@@ -148,7 +97,6 @@ void drawMainObjects(SDL_Renderer *renderer){
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderFillRect(renderer, &main_fortress);
-    return;
 }
 
 int main(int argc, char *argv[])
