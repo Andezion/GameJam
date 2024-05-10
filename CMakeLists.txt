@@ -10,7 +10,9 @@ set(SDL2_IMAGE_LIB_DIR C:\\Libs\\SDL_image\\lib)
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR})
 link_directories(${SDL2_LIB_DIR} ${SDL2_IMAGE_LIB_DIR})
 
-add_executable(GameJam main.c)
+add_executable(GameJam main.c
+        chort.c
+        chort.h)
 
 target_link_libraries(GameJam SDL2main SDL2 SDL2_image)
 

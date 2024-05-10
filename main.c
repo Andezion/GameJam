@@ -1,7 +1,8 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
+#include "chort.h"
 
 // Константы
 int HEIGHT = 800;
@@ -131,6 +132,8 @@ int main(int argc, char *argv[])
     IMG_Init(IMG_INIT_PNG);
     enum STATE state = mainMenu;
     SDL_ShowCursor(SDL_DISABLE);
+
+    SDL_Rect chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
@@ -189,15 +192,19 @@ int main(int argc, char *argv[])
                 SDL_RenderPresent(renderer);
                 break;
             case game:
+                if (update_chort((SDL_Rect){350, 250, 80, 80}, &chort))
+                    state = gameOver;
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
                 set_background(renderer);
                 drawMainObjects(renderer);
                 drawCoursor(renderer, cursorTexture);
+                draw_chort(renderer, &chort);
                 // Тут конец отрисовки
                 SDL_RenderPresent(renderer);
                 break;
             case gameOver:
+                running = 0;
                 break;
             default:
                 exit(-5);
