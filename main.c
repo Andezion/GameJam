@@ -125,6 +125,18 @@ void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start,
 
 }
 
+void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver) {
+    SDL_Rect overPos = {0, 0, 800,600};
+    Uint8 r, g, b, a;
+    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_SetRenderDrawColor(renderer, 40,40,40, 255);
+    SDL_RenderFillRect(renderer, &overPos);
+    SDL_RenderCopy(renderer, gameOver, NULL, &overPos);
+
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -155,10 +167,12 @@ int main(int argc, char *argv[])
     SDL_Texture *logo = NULL;
     SDL_Texture *start = NULL;
     SDL_Texture *cat = NULL;
+    SDL_Texture *gameOverScreen = NULL;
     loadTexture(&cursorTexture, renderer, "../Sprites/Coursor.png");
     loadTexture(&logo, renderer, "../Sprites/Team Logo.png");
     loadTexture(&start, renderer, "../Sprites/StartGame.png");
     loadTexture(&cat, renderer, "../Sprites/cat.png");
+    loadTexture(&gameOverScreen, renderer, "../Sprites/GameOver.png");
 
 
     SDL_Event event;
@@ -193,7 +207,7 @@ int main(int argc, char *argv[])
                 break;
             case game:
                 if (update_chort((SDL_Rect){350, 250, 80, 80}, &chort))
-                    //state = gameOver;
+                    state = gameOver;
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
                 set_background(renderer);
@@ -204,7 +218,9 @@ int main(int argc, char *argv[])
                 SDL_RenderPresent(renderer);
                 break;
             case gameOver:
-                running = 0;
+                SDL_RenderClear(renderer);
+                drawGameOver(renderer, gameOverScreen);
+                SDL_RenderPresent(renderer);
                 break;
             default:
                 exit(-5);
