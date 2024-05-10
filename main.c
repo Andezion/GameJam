@@ -6,6 +6,7 @@
 int HEIGHT = 800;
 int WIDTH = 600;
 
+// Рисует задний фон
 void set_background(SDL_Renderer *renderer)
 {
     /*int size = 25;
@@ -119,9 +120,8 @@ void set_background(SDL_Renderer *renderer)
     }
 }
 
+// Рисует объекты (4 базы и крепость)
 void drawMainObjects(SDL_Renderer *renderer){
-    SDL_RenderClear(renderer);
-    set_background(renderer);
 
     SDL_Rect base1 = {50, 50, 50, 50};
     SDL_RenderFillRect(renderer, &base1);
@@ -169,6 +169,9 @@ int main(int argc, char *argv[])
                 running = 0;
             }
         }
+
+        SDL_RenderClear(renderer);
+        set_background(renderer);
 
         drawMainObjects(renderer);
     }
