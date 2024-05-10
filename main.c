@@ -2,9 +2,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+// Константы
 int HEIGHT = 800;
 int WIDTH = 600;
+int CURSORSIZE = 32;
+
+void drawCoursor(SDL_Renderer *renderer) {
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    Uint8 r, g, b, a;
+    // Запоминаем цвет
+    SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+    SDL_Rect cursor = {x, y, CURSORSIZE, CURSORSIZE};
+    SDL_SetRenderDrawColor(renderer, 255,255,255, 255);
+    SDL_RenderFillRect(renderer, &cursor);
+
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+}
 
 // Рисует задний фон
 void set_background(SDL_Renderer *renderer)
@@ -134,8 +148,6 @@ void drawMainObjects(SDL_Renderer *renderer){
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderFillRect(renderer, &main_fortress);
-
-    SDL_RenderPresent(renderer);
     return;
 }
 
@@ -172,8 +184,9 @@ int main(int argc, char *argv[])
 
         SDL_RenderClear(renderer);
         set_background(renderer);
-
         drawMainObjects(renderer);
+        drawCoursor(renderer);
+        SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
