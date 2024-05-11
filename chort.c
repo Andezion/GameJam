@@ -95,10 +95,6 @@ int loadTextureArray(SDL_Renderer* renderer, const char** fileNames, int arraySi
 }
 
 int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
-    if (chort->dead) return 0;
-    if (intersect(castle, chort->chort)) {
-int update_chort(SDL_Rect castle, struct chort_t  *chort)
-{
     if (chort->dead)
     {
         return 0;

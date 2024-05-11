@@ -1,6 +1,6 @@
 #ifndef GAMEJAM_CHORT_H
 #define GAMEJAM_CHORT_H
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 struct chort_t {
     SDL_Rect chort;
