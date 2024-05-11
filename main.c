@@ -1,7 +1,7 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 #include "chort.h"
 
 // Константы
@@ -10,7 +10,6 @@ int WIDTH = 600;
 int CURSORSIZE = 32;
 int MAXCHORTAMOUNT = 32;
 
-int pick;
 unsigned long long timeStart;
 unsigned long long timeFromSpawn;
 
@@ -247,7 +246,7 @@ int main(int argc, char *argv[])
                 if (x > 160 && x < 640 && y > 100 && y < 132)
                 {
                     state = game;
-                    timeStart = SDL_GetTicks64();
+                    timeStart = SDL_GetTicks();
                 }
             }
             if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -257,7 +256,7 @@ int main(int argc, char *argv[])
         }
 
         // Ебля со временем
-        unsigned long long currentTime = SDL_GetTicks64();
+        unsigned long long currentTime = SDL_GetTicks();
         if(currentTime - timeFromSpawn > 2500)
         {
         }
@@ -290,10 +289,8 @@ int main(int argc, char *argv[])
                 SDL_RenderPresent(renderer);
                 SDL_Delay(2500);
                 goto exit;
-                exit(-1);
-                break;
             default:
-                exit(-5);
+                return 5;
         }
     }
     exit:
