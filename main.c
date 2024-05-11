@@ -155,6 +155,8 @@ void drawMainObjects(SDL_Renderer *renderer)
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderCopy(renderer, texturka, 0, &main_fortress);
+    SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(texturka);
 }
 
 
