@@ -15,6 +15,7 @@ struct chort_t spawn_chort(SDL_Rect base)
     chort.chort.w = 30;
     chort.num = 0;
     chort.dead = 0;
+    chort.speed = rand() % 5 + 1;
     return chort;
 }
 
@@ -112,8 +113,8 @@ int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
         }
     }
     SDL_Point kierunek = find_path(castle, chort);
-    chort->chort.x += kierunek.x * 5;
-    chort->chort.y += kierunek.y * 5;
+    chort->chort.x += kierunek.x * chort->speed;
+    chort->chort.y += kierunek.y * chort->speed;
 
     return 0;
 }

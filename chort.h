@@ -6,6 +6,7 @@ struct chort_t {
     SDL_Rect chort;
     SDL_bool dead;
     int num;
+    int speed;
 };
 
 struct chort_t spawn_chort(SDL_Rect base);

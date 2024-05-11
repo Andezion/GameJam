@@ -182,6 +182,10 @@ void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver)
 
 int main(int argc, char *argv[])
 {
+    SDL_Rect bases[] = {{50, 50, 50, 50},
+                        {700, 50, 50, 50},
+                        {50, 500, 50, 50},
+                        {700, 500, 50, 50}};
     SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG);
     enum STATE state = mainMenu;
@@ -197,7 +201,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
+    struct chort_t cherti[10] = {0};
+    int cherti_num = 4;
     int chortAmount;
     SDL_Window *window = SDL_CreateWindow("GameJam", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
@@ -213,6 +218,10 @@ int main(int argc, char *argv[])
 
         SDL_Quit();
         return 1;
+    }
+
+    for (int i = 0; i < cherti_num; ++i) {
+        cherti[i] = spawn_chort(bases[rand() % 4]);
     }
 
     // Загружаем Изображения
@@ -233,6 +242,11 @@ int main(int argc, char *argv[])
     int running = 1;
     while(running)
     {
+        for (int i = 0; i < cherti_num; ++i) {
+            if (cherti[i].dead && ((rand() % 100) == 0)) {
+                cherti[i] = spawn_chort(bases[rand() % 4]);
+            }
+        }
         int mouse_pressed = 0;
         while(SDL_PollEvent(&event))
         {
@@ -273,14 +287,19 @@ int main(int argc, char *argv[])
                 SDL_RenderPresent(renderer);
                 break;
             case game:
-                if (update_chort((SDL_Rect){350, 250, 80, 80}, &chort, mouse_pressed))
-                    state = gameOver;
+                for (int i = 0; i < cherti_num; ++i) {
+                    if (update_chort((SDL_Rect){350, 250, 80, 80}, cherti+i, mouse_pressed))
+                        state = gameOver;
+                }
+
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
                 set_background(renderer, pick);
                 drawMainObjects(renderer);
+                for (int i = 0; i < cherti_num; ++i) {
+                    draw_chort(renderer, cherti+i);
+                }
                 drawCoursor(renderer, cursorTexture);
-                draw_chort(renderer, &chort);
                 // Тут конец отрисовки
                 SDL_RenderPresent(renderer);
                 break;
