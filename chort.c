@@ -12,7 +12,7 @@ struct chort_t spawn_chort(SDL_Rect base)
     chort.chort.w = 30;
     chort.num = 0;
     chort.dead = 0;
-    chort.speed = rand() % 5 + 1;
+    chort.speed = rand() % 2 + 1;
     return chort;
 }
 
