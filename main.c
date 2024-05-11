@@ -10,7 +10,6 @@ int WIDTH = 600;
 int CURSORSIZE = 32;
 int MAXCHORTAMOUNT = 32;
 
-int pick;
 unsigned long long timeStart;
 unsigned long long timeFromSpawn;
 
@@ -271,7 +270,7 @@ int main(int argc, char *argv[])
         }
 
         // Ебля со временем
-        unsigned long long currentTime = SDL_GetTicks64();
+        unsigned long long currentTime = SDL_GetTicks();
         if(currentTime - timeFromSpawn > 2500)
         {
         }
@@ -309,10 +308,8 @@ int main(int argc, char *argv[])
                 SDL_RenderPresent(renderer);
                 SDL_Delay(2500);
                 goto exit;
-                exit(-1);
-                break;
             default:
-                exit(-5);
+                return 5;
         }
     }
     exit:

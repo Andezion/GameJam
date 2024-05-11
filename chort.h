@@ -1,6 +1,6 @@
 #ifndef GAMEJAM_CHORT_H
 #define GAMEJAM_CHORT_H
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 struct chort_t {
     SDL_Rect chort;
@@ -12,6 +12,8 @@ struct chort_t {
 struct chort_t spawn_chort(SDL_Rect base);
 
 int intersect(SDL_Rect r1, SDL_Rect r2);
+
+int contains(SDL_Rect r, SDL_Point p);
 
 SDL_Point find_path(SDL_Rect castle, struct chort_t * chort);
 

@@ -12,7 +12,7 @@ link_directories(${SDL2_LIB_DIR} ${SDL2_IMAGE_LIB_DIR})
 
 add_executable(GameJam main.c
         chort.c
-        chort.h)
+        chort.h man.c man.h)
 
 target_link_libraries(GameJam SDL2main SDL2 SDL2_image)
 
