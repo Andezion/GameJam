@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "chort.h"
 #include "man.h"
 
@@ -14,6 +15,7 @@ int MAXCHORTAMOUNT = 32;
 unsigned long long timeStart;
 unsigned long long timeFromSpawn;
 
+size_t ochko_andreja = 0;
 
 enum STATE {mainMenu, game, gameOver};
 
@@ -156,8 +158,24 @@ void drawMainObjects(SDL_Renderer *renderer)
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderCopy(renderer, texturka, 0, &main_fortress);
-    SDL_FreeSurface(dupka);
     SDL_DestroyTexture(texturka);
+
+    TTF_Font* f;
+    f = TTF_OpenFont("../Sprites/font.ttf", 100);
+    if (!f) {
+        printf("%s", TTF_GetError());
+        exit(-1);
+
+    }
+    char num[255] = {0};
+    sprintf(num, "%4zu", ochko_andreja);
+    SDL_Surface* pointsurface = TTF_RenderText_Solid(f, num, (SDL_Color) {255, 255, 255, 0});
+    SDL_Texture* txt = SDL_CreateTextureFromSurface(renderer, pointsurface);
+    SDL_Rect r = {700, 0, 100, 50};
+    SDL_RenderCopy(renderer, txt, 0, &r);
+    TTF_CloseFont(f);
+    SDL_FreeSurface(pointsurface);
+    SDL_DestroyTexture(txt);
 }
 
 
@@ -191,6 +209,7 @@ int main(int argc, char *argv[])
                         {700, 500, 50, 50}};
     SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG);
+    TTF_Init();
     enum STATE state = mainMenu;
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -254,6 +273,7 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < cherti_num; ++i) {
             if (cherti[i].dead && ((rand() % 100) == 0)) {
+                ochko_andreja += 1 + cherti[i].speed;
                 cherti[i] = spawn_chort(bases[rand() % 4]);
             }
         }
@@ -312,6 +332,7 @@ int main(int argc, char *argv[])
                 for (int i = 0; i < man_num; ++i) {
                    if (update_man((SDL_Rect){350, 250, 80, 80}, mane+i, mouse_pressed))
                     {
+                       //ochko_andreja -= 20;
                         mane[i].dead = 1;
                     }
                 }
