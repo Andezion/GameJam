@@ -8,8 +8,8 @@
 SDL_Texture *texture_robot[4];
 SDL_Texture *texture_man[4];
 
-const char *robot[4] = {"robot1.bmp", "robot2.bmp", "robot1.bmp", "robot3.bmp"};
-const char *man[4] = {"man1.bmp", "man2.bmp", "man1.bmp", "man3.bmp"};
+const char *robot[4] = {"../Sprites/robot1.bmp", "../Sprites/robot2.bmp", "../Sprites/robot1.bmp", "../Sprites/robot3.bmp"};
+const char *man[4] = {"../Sprites/man1.bmp", "../Sprites/man2.bmp", "../Sprites/man1.bmp", "../Sprites/man3.bmp"};
 
 struct chort_t spawn_chort(SDL_Rect base) {
     struct chort_t chort;
