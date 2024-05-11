@@ -158,6 +158,7 @@ void drawMainObjects(SDL_Renderer *renderer)
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderCopy(renderer, texturka, 0, &main_fortress);
+    SDL_DestroyTexture(texture);
     SDL_DestroyTexture(texturka);
 
     TTF_Font* f;
@@ -189,14 +190,18 @@ void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start,
     SDL_RenderCopy(renderer, cat, NULL, &CatPos);
 }
 
-void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver)
+void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver, SDL_Texture *restartScreen)
 {
-    SDL_Rect overPos = {0, 0, 800,600};
+    SDL_Rect overPos = {100, 0, 560,420};
+    SDL_Rect restartPos = {280, 400, 240, 180};
+    SDL_Rect screen = {0, 0, 800, 600};
     Uint8 r, g, b, a;
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
     SDL_SetRenderDrawColor(renderer, 40,40,40, 255);
-    SDL_RenderFillRect(renderer, &overPos);
+    SDL_RenderFillRect(renderer, &screen);
     SDL_RenderCopy(renderer, gameOver, NULL, &overPos);
+    SDL_RenderCopy(renderer, restartScreen, NULL, &restartPos);
+
 
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
@@ -259,11 +264,13 @@ int main(int argc, char *argv[])
     SDL_Texture *start = NULL;
     SDL_Texture *cat = NULL;
     SDL_Texture *gameOverScreen = NULL;
+    SDL_Texture *restarScreen = NULL;
     loadTexture(&cursorTexture, renderer, "../Sprites/Coursor.png");
     loadTexture(&logo, renderer, "../Sprites/Team Logo.png");
     loadTexture(&start, renderer, "../Sprites/StartGame.png");
     loadTexture(&cat, renderer, "../Sprites/cat.png");
     loadTexture(&gameOverScreen, renderer, "../Sprites/GameOver.png");
+    loadTexture(&restarScreen, renderer, "../Sprites/PressRToRestart.png");
 
 
     SDL_Event event;
@@ -273,7 +280,6 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < cherti_num; ++i) {
             if (cherti[i].dead && ((rand() % 100) == 0)) {
-                ochko_andreja += 1 + cherti[i].speed;
                 cherti[i] = spawn_chort(bases[rand() % 4]);
             }
         }
@@ -332,7 +338,6 @@ int main(int argc, char *argv[])
                 for (int i = 0; i < man_num; ++i) {
                    if (update_man((SDL_Rect){350, 250, 80, 80}, mane+i, mouse_pressed))
                     {
-                       //ochko_andreja -= 20;
                         mane[i].dead = 1;
                     }
                 }
@@ -354,7 +359,7 @@ int main(int argc, char *argv[])
                 break;
             case gameOver:
                 SDL_RenderClear(renderer);
-                drawGameOver(renderer, gameOverScreen);
+                drawGameOver(renderer, gameOverScreen, restarScreen);
                 SDL_RenderPresent(renderer);
                 SDL_Delay(2500);
                 goto exit;
@@ -370,6 +375,8 @@ int main(int argc, char *argv[])
     SDL_DestroyTexture(logo);
     SDL_DestroyTexture(start);
     SDL_DestroyTexture(cat);
+    SDL_DestroyTexture(gameOverScreen);
+    SDL_DestroyTexture(restarScreen);
     IMG_Quit();
     SDL_Quit();
 
