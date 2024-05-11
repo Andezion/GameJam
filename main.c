@@ -232,6 +232,15 @@ int main(int argc, char *argv[])
                     state = game;
                 }
             }
+            if(event.type == SDL_MOUSEBUTTONDOWN && state == game)
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                if(chort.chort.x < x && chort.chort.y < y && chort.chort.x + chort.chort.w > x && chort.chort.y + chort.chort.h> y)
+                    chort.dead = 1;
+
+            }
+
         }
 
 
