@@ -1,7 +1,7 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include "chort.h"
 #include "man.h"
@@ -280,6 +280,7 @@ int main(int argc, char *argv[])
     {
         for (int i = 0; i < cherti_num; ++i) {
             if (cherti[i].dead && ((rand() % 100) == 0)) {
+                ochko_andreja += cherti[i].speed * 5;
                 cherti[i] = spawn_chort(bases[rand() % 4]);
             }
         }
@@ -318,6 +319,7 @@ int main(int argc, char *argv[])
         unsigned long long currentTime = SDL_GetTicks();
         if(currentTime - timeFromSpawn > 2500)
         {
+
         }
 
 
