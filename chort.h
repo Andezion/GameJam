@@ -1,7 +1,3 @@
-//
-// Created by ajeszny on 10.05.24.
-//
-
 #ifndef GAMEJAM_CHORT_H
 #define GAMEJAM_CHORT_H
 #include <SDL.h>
