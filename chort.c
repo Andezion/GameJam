@@ -5,19 +5,17 @@
 #include "chort.h"
 #include <stdio.h>
 
-SDL_Texture *texture_robot[8];
+SDL_Texture *texture_robot[4];
 SDL_Texture *texture_man[4];
 
-const char *robot[8] = {"robot1.bmp", "robot2.bmp", "robot2.bmp", "robot1.bmp", "robot1.bmp", "robot3.bmp","robot3.bmp","robot1.bmp"};
-const char *man[4] = {"man1.bmp", "man2.bmp", "man1.bmp", "man3.bmp"};
+const char *robot[4] = {"../Sprites/robot1.bmp", "../Sprites/robot2.bmp", "../Sprites/robot1.bmp", "../Sprites/robot3.bmp"};
+const char *man[4] = {"../Sprites/man1.bmp", "../Sprites/man2.bmp", "../Sprites/man1.bmp", "../Sprites/man3.bmp"};
 
 struct chort_t spawn_chort(SDL_Rect base) {
     struct chort_t chort;
     chort.chort = base;
-
-    int hei = 30 + rand() % 11;
-    chort.chort.h = hei;
-    chort.chort.w = hei;
+    chort.chort.h = 30;
+    chort.chort.w = 30;
     chort.num = 0;
     chort.dead = 0;
     return chort;
@@ -104,7 +102,7 @@ int update_chort(SDL_Rect castle, struct chort_t  *chort) {
 void draw_chort(SDL_Renderer *r, struct chort_t *chort)
 {
     if (chort->dead) return;
-    loadTextureArray(r, robot, 8, texture_robot);
-    SDL_RenderCopy(r, texture_robot[chort->num % 8], NULL, &chort->chort);
-    chort->num = (chort->num + 1) % 8;
+    loadTextureArray(r, robot, 4, texture_robot);
+    SDL_RenderCopy(r, texture_robot[chort->num % 4], NULL, &chort->chort);
+    chort->num = (chort->num + 1) % 4;
 }

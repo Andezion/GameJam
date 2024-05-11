@@ -128,7 +128,7 @@ void set_background(SDL_Renderer *renderer, int pick[39][29])
 // Рисует объекты (4 базы и крепость)
 void drawMainObjects(SDL_Renderer *renderer)
 {
-    SDL_Surface* surface = SDL_LoadBMP("spawn.bmp");
+    SDL_Surface* surface = SDL_LoadBMP("../Sprites/spawn.bmp");
     if (surface == NULL)
     {
         printf("Error loading image: %s\n", SDL_GetError());
@@ -157,7 +157,7 @@ void drawMainObjects(SDL_Renderer *renderer)
     SDL_Rect base4 = {700, 500, 50, 50};
     SDL_RenderCopy(renderer, texture, 0, &base4);
 
-    SDL_Surface *dupka = SDL_LoadBMP("dante.bmp");
+    SDL_Surface *dupka = SDL_LoadBMP("../Sprites/dante.bmp");
     if (dupka == NULL)
     {
         printf("Error loading image: %s\n", SDL_GetError());
@@ -268,6 +268,15 @@ int main(int argc, char *argv[])
                     state = game;
                 }
             }
+            if(event.type == SDL_MOUSEBUTTONDOWN && state == game)
+            {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                if(chort.chort.x < x && chort.chort.y < y && chort.chort.x + chort.chort.w > x && chort.chort.y + chort.chort.h> y)
+                    chort.dead = 1;
+
+            }
+
         }
 
 
