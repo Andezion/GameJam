@@ -1,7 +1,7 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include "chort.h"
 
 // Константы
@@ -100,7 +100,7 @@ void set_background(SDL_Renderer *renderer, int pick)
 // Рисует объекты (4 базы и крепость)
 void drawMainObjects(SDL_Renderer *renderer)
 {
-    SDL_Surface* surface = SDL_LoadBMP("spawn.bmp");
+    SDL_Surface* surface = SDL_LoadBMP("../Sprites/spawn.bmp");
     if (surface == NULL)
     {
         printf("Error loading image: %s\n", SDL_GetError());
@@ -129,7 +129,7 @@ void drawMainObjects(SDL_Renderer *renderer)
     SDL_Rect base4 = {700, 500, 50, 50};
     SDL_RenderCopy(renderer, texture, 0, &base4);
 
-    SDL_Surface *dupka = SDL_LoadBMP("dante.bmp");
+    SDL_Surface *dupka = SDL_LoadBMP("../Sprites/dante.bmp");
     if (dupka == NULL)
     {
         printf("Error loading image: %s\n", SDL_GetError());
