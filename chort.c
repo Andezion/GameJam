@@ -11,7 +11,7 @@ struct chort_t spawn_chort(SDL_Rect base)
 
     int dupka = 30 + rand() % 10;
     chort.chort.h = dupka;
-    chort.chort.w = dupka;
+    chort.chort.w = dupka + 10;
     chort.num = 0;
     chort.dead = 0;
     chort.speed = 2 /*rand() % 2 + 1*/;
@@ -127,4 +127,9 @@ void draw_chort(SDL_Renderer *r, struct chort_t *chort)
     loadTextureArray(r, robot, 4, texture_robot);
     SDL_RenderCopy(r, texture_robot[chort->num % 4], NULL, &chort->chort);
     chort->num = (chort->num + 1) % 4;
+
+    for(int i = 0; i < 4; i++)
+    {
+        SDL_DestroyTexture(texture_robot[i]);
+    }
 }

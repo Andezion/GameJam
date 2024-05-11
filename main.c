@@ -338,6 +338,7 @@ int main(int argc, char *argv[])
                 return 5;
         }
     }
+
     exit:
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

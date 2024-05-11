@@ -8,13 +8,28 @@ const char *man[4] = {"../Sprites/man1.bmp", "../Sprites/man2.bmp", "../Sprites/
 struct man_t spawn_man(SDL_Rect* base, int num)
 {
     SDL_Rect* nextbase = (base + num + 1);
-    if (num == 3) {
-        nextbase = base;
+    if(num == 0)
+    {
+        nextbase = (base + 1);
     }
+    if(num == 1)
+    {
+        nextbase = (base + 2);
+    }
+    if(num == 2)
+    {
+        nextbase = (base + 3);
+    }
+    if (num == 3)
+    {
+        nextbase = (base + 0);
+    }
+
+
     struct man_t mane;
     mane.man = base[num];
     mane.man.h = 35;
-    mane.man.w = 35;
+    mane.man.w = 55;
     mane.num = 0;
     mane.dead = 0;
     mane.base = nextbase;
@@ -91,4 +106,9 @@ void draw_man(SDL_Renderer *r, struct man_t *mane)
     loadTextureArray(r, man, 4, texture_man);
     SDL_RenderCopy(r,texture_man[mane->num % 4], NULL, &mane->man);
     mane->num = (mane->num + 1) % 4;
+
+    for(int i = 0; i < 4; i++)
+    {
+        SDL_DestroyTexture(texture_man[i]);
+    }
 }
