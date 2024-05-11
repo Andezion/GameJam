@@ -18,7 +18,7 @@ int intersect(SDL_Rect r1, SDL_Rect r2);
 
 SDL_Point find_path(SDL_Rect castle, struct chort_t * chort);
 
-int update_chort(SDL_Rect castle, struct chort_t * chort);
+int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed) ;
 
 void draw_chort(SDL_Renderer* r, struct chort_t * chort);
 

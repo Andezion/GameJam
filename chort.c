@@ -83,15 +83,17 @@ int loadTextureArray(SDL_Renderer* renderer, const char** fileNames, int arraySi
     return 0;
 }
 
-int update_chort(SDL_Rect castle, struct chort_t  *chort) {
+int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
     if (chort->dead) return 0;
     if (intersect(castle, chort->chort)) {
         return 1;
     }
     SDL_Point mouse;
-    SDL_GetMouseState(&mouse.x, &mouse.y);
-    if (contains(chort->chort, mouse)) {
-        chort->dead = 1;
+    if (mousepressed) {
+        SDL_GetMouseState(&mouse.x, &mouse.y);
+        if (contains(chort->chort, mouse)) {
+            chort->dead = 1;
+        }
     }
     SDL_Point kierunek = find_path(castle, chort);
     chort->chort.x += kierunek.x * 5;

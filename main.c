@@ -217,6 +217,7 @@ int main(int argc, char *argv[])
     int running = 1;
     while(running)
     {
+        int mouse_pressed = 0;
         while(SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_q)
@@ -232,6 +233,9 @@ int main(int argc, char *argv[])
                     state = game;
                 }
             }
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                mouse_pressed = 1;
+            }
         }
 
 
@@ -245,7 +249,7 @@ int main(int argc, char *argv[])
                 SDL_RenderPresent(renderer);
                 break;
             case game:
-                if (update_chort((SDL_Rect){350, 250, 80, 80}, &chort))
+                if (update_chort((SDL_Rect){350, 250, 80, 80}, &chort, mouse_pressed))
                     state = gameOver;
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
