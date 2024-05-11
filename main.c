@@ -9,8 +9,6 @@ int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
 
-int pick;
-
 enum STATE {mainMenu, game, gameOver};
 
 void loadTexture(SDL_Texture **Texture, SDL_Renderer *renderer, char* fileName) {
@@ -39,7 +37,7 @@ void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture)
 }
 
 // Рисует задний фон
-void set_background(SDL_Renderer *renderer, int pick)
+void set_background(SDL_Renderer *renderer, int pick[39][29])
 {
     int cell_size = 20;
 
@@ -62,7 +60,37 @@ void set_background(SDL_Renderer *renderer, int pick)
             }
             else
             {
-                switch(pick)
+                if(pick[i][j] == 1)
+                {
+                    SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 2)
+                {
+                    SDL_SetRenderDrawColor(renderer, 43, 33, 3, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 3)
+                {
+                    SDL_SetRenderDrawColor(renderer, 12, 25, 11, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 4)
+                {
+                    SDL_SetRenderDrawColor(renderer, 11, 19, 25, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 5)
+                {
+                    SDL_SetRenderDrawColor(renderer, 20, 16, 25, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 6)
+                {
+                    SDL_SetRenderDrawColor(renderer, 25, 16, 20, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                /*switch(pick[i][j])
                 {
                     case (1):
                         SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
@@ -88,7 +116,7 @@ void set_background(SDL_Renderer *renderer, int pick)
                         SDL_SetRenderDrawColor(renderer, 25, 16, 20, 255);
                         SDL_RenderFillRect(renderer, &cell);
                         break;
-                }
+                }*/
             }
 
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -180,10 +208,18 @@ int main(int argc, char *argv[])
     enum STATE state = mainMenu;
     SDL_ShowCursor(SDL_DISABLE);
 
-    pick = 1 + rand() % 6;
+    int pick[40][30];
+    for(int i = 0; i < 40; i++)
+    {
+        for(int j = 0; j < 30; j++)
+        {
+            int num = 1 + rand() % 6;
+            pick[i][j] = num;
+        }
+    }
 
     struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
-    SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow("GameJam", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
         printf("Error in creating window: %s\n", SDL_GetError());
