@@ -1,15 +1,19 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 #include "chort.h"
 
 // Константы
 int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
+int MAXCHORTAMOUNT = 32;
 
 int pick;
+unsigned long long timeStart;
+unsigned long long timeFromSpawn;
+
 
 enum STATE {mainMenu, game, gameOver};
 
@@ -39,7 +43,7 @@ void drawCoursor(SDL_Renderer *renderer, SDL_Texture *cursorTexture)
 }
 
 // Рисует задний фон
-void set_background(SDL_Renderer *renderer, int pick)
+void set_background(SDL_Renderer *renderer, int pick[40][30])
 {
     int cell_size = 20;
 
@@ -62,32 +66,35 @@ void set_background(SDL_Renderer *renderer, int pick)
             }
             else
             {
-                switch(pick)
+                if(pick[i][j] == 1)
                 {
-                    case (1):
-                        SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
-                        SDL_RenderFillRect(renderer, &cell);
-                        break;
-                    case (2):
-                        SDL_SetRenderDrawColor(renderer, 43, 33, 3, 255);
-                        SDL_RenderFillRect(renderer, &cell);
-                        break;
-                    case (3):
-                        SDL_SetRenderDrawColor(renderer, 12, 25, 11, 255);
-                        SDL_RenderFillRect(renderer, &cell);
-                        break;
-                    case (4):
-                        SDL_SetRenderDrawColor(renderer, 11, 19, 25, 255);
-                        SDL_RenderFillRect(renderer, &cell);
-                        break;
-                    case (5):
-                        SDL_SetRenderDrawColor(renderer, 20, 16, 25, 255);
-                        SDL_RenderFillRect(renderer, &cell);
-                        break;
-                    default:
-                        SDL_SetRenderDrawColor(renderer, 25, 16, 20, 255);
-                        SDL_RenderFillRect(renderer, &cell);
-                        break;
+                    SDL_SetRenderDrawColor(renderer, 13, 28, 43, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 2)
+                {
+                    SDL_SetRenderDrawColor(renderer, 43, 33, 3, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 3)
+                {
+                    SDL_SetRenderDrawColor(renderer, 12, 25, 11, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 4)
+                {
+                    SDL_SetRenderDrawColor(renderer, 11, 19, 25, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 5)
+                {
+                    SDL_SetRenderDrawColor(renderer, 20, 16, 25, 255);
+                    SDL_RenderFillRect(renderer, &cell);
+                }
+                if(pick[i][j] == 6)
+                {
+                    SDL_SetRenderDrawColor(renderer, 25, 16, 20, 255);
+                    SDL_RenderFillRect(renderer, &cell);
                 }
             }
 
@@ -180,10 +187,19 @@ int main(int argc, char *argv[])
     enum STATE state = mainMenu;
     SDL_ShowCursor(SDL_DISABLE);
 
-    pick = 1 + rand() % 6;
+    int pick[40][30];
+    for(int i = 0; i < 40; i++)
+    {
+        for(int j = 0; j < 30; j++)
+        {
+            int num = 1 + rand() % 6;
+            pick[i][j] = num;
+        }
+    }
 
     struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
-    SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
+    int chortAmount;
+    SDL_Window *window = SDL_CreateWindow("GameJam", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
         printf("Error in creating window: %s\n", SDL_GetError());
@@ -231,11 +247,19 @@ int main(int argc, char *argv[])
                 if (x > 160 && x < 640 && y > 100 && y < 132)
                 {
                     state = game;
+                    timeStart = SDL_GetTicks64();
                 }
             }
             if (event.type == SDL_MOUSEBUTTONDOWN) {
                 mouse_pressed = 1;
             }
+
+        }
+
+        // Ебля со временем
+        unsigned long long currentTime = SDL_GetTicks64();
+        if(currentTime - timeFromSpawn > 2500)
+        {
         }
 
 
