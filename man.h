@@ -7,6 +7,7 @@ struct man_t
     SDL_Rect man;
     SDL_bool dead;
     int num;
+    int is_home;
     SDL_Rect* base;
 };
 

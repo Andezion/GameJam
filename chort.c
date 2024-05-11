@@ -4,6 +4,7 @@
 SDL_Texture *texture_robot[4];
 
 const char *robot[4] = {"../Sprites/robot1.bmp", "../Sprites/robot2.bmp", "../Sprites/robot1.bmp", "../Sprites/robot3.bmp"};
+
 struct chort_t spawn_chort(SDL_Rect base)
 {
     struct chort_t chort;
@@ -14,7 +15,7 @@ struct chort_t spawn_chort(SDL_Rect base)
     chort.chort.w = dupka + 10;
     chort.num = 0;
     chort.dead = 0;
-    chort.speed = 2 /*rand() % 2 + 1*/;
+    chort.speed = 2;
     return chort;
 }
 
@@ -94,7 +95,8 @@ int loadTextureArray(SDL_Renderer* renderer, const char** fileNames, int arraySi
     return 0;
 }
 
-int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
+int update_chort(SDL_Rect castle, SDL_Renderer *renderer, struct chort_t  *chort, int mousepressed)
+{
     if (chort->dead)
     {
         return 0;
@@ -105,14 +107,15 @@ int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
     }
 
     SDL_Point mouse;
-    if (mousepressed) {
+    if (mousepressed)
+    {
         SDL_GetMouseState(&mouse.x, &mouse.y);
         if (contains(chort->chort, mouse))
         {
             chort->dead = 1;
-
         }
     }
+
     SDL_Point kierunek = find_path(castle, chort);
     chort->chort.x += kierunek.x * chort->speed;
     chort->chort.y += kierunek.y * chort->speed;
@@ -124,11 +127,26 @@ void draw_chort(SDL_Renderer *r, struct chort_t *chort)
 {
     if (chort->dead)
     {
+        int blood_width = 30;
+        int blood_height = 30;
+
+        int blood_x = chort->chort.x + chort->chort.w / 2 - blood_width / 2;
+        int blood_y = chort->chort.y + chort->chort.h / 2 - blood_height / 2;
+
+        SDL_Rect blood_rect = {blood_x, blood_y, blood_width, blood_height};
+
+        SDL_Surface *died = SDL_LoadBMP("../Sprites/oil.bmp");
+        SDL_Texture *ded = SDL_CreateTextureFromSurface(r, died);
+        SDL_FreeSurface(died);
+        SDL_RenderCopy(r, ded, NULL, &blood_rect);
+        SDL_DestroyTexture(ded);
         return;
     }
+
     loadTextureArray(r, robot, 4, texture_robot);
     SDL_RenderCopy(r, texture_robot[chort->num % 4], NULL, &chort->chort);
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i)
+    {
         SDL_DestroyTexture(texture_robot[i]);
     }
     chort->num = (chort->num + 1) % 4;

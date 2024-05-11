@@ -1,6 +1,5 @@
 #include "man.h"
 #include "chort.h"
-#include <stdio.h>
 
 SDL_Texture *texture_man[4];
 const char *man[4] = {"../Sprites/man1.bmp", "../Sprites/man2.bmp", "../Sprites/man1.bmp", "../Sprites/man3.bmp"};
@@ -25,13 +24,14 @@ struct man_t spawn_man(SDL_Rect* base, int num)
         nextbase = (base + 0);
     }
 
-
     struct man_t mane;
     mane.man = base[num];
-    mane.man.h = 35;
-    mane.man.w = 55;
+    int pop = 40 + rand() % 10;
+    mane.man.h = pop;
+    mane.man.w = pop + 10;
     mane.num = 0;
     mane.dead = 0;
+    mane.is_home = 0;
     mane.base = nextbase;
     return mane;
 }
@@ -78,6 +78,7 @@ int update_man(SDL_Rect castle, struct man_t *mane, int mousepressed)
 
     if(intersect(*mane->base, mane->man))
     {
+        mane->is_home = 1;
         return 1;
     }
 
@@ -94,13 +95,31 @@ int update_man(SDL_Rect castle, struct man_t *mane, int mousepressed)
     SDL_Point kierunek = find_path_man(mane);
     mane->man.x += kierunek.x * 2;
     mane->man.y += kierunek.y * 2;
+
     return 0;
 }
 
 void draw_man(SDL_Renderer *r, struct man_t *mane)
 {
+    if(mane->is_home)
+    {
+        return;
+    }
     if(mane->dead)
     {
+        int blood_width = 30;
+        int blood_height = 30;
+
+        int blood_x = mane->man.x + mane->man.w / 2 - blood_width / 2;
+        int blood_y = mane->man.y + mane->man.h / 2 - blood_height / 2;
+
+        SDL_Rect blood_rect = {blood_x, blood_y, blood_width, blood_height};
+
+        SDL_Surface *died = SDL_LoadBMP("../Sprites/blood.bmp");
+        SDL_Texture *ded = SDL_CreateTextureFromSurface(r, died);
+        SDL_FreeSurface(died);
+        SDL_RenderCopy(r, ded, NULL, &blood_rect);
+        SDL_DestroyTexture(ded);
         return;
     }
     loadTextureArray(r, man, 4, texture_man);

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2\SDL_ttf.h>
 #include "chort.h"
 #include "man.h"
 
@@ -15,7 +15,7 @@ int MAXCHORTAMOUNT = 32;
 unsigned long long timeStart;
 unsigned long long timeFromSpawn;
 
-size_t ochko_andreja = 0;
+int ochko_andreja = 0;
 
 enum STATE {mainMenu, game, gameOver};
 
@@ -169,7 +169,7 @@ void drawMainObjects(SDL_Renderer *renderer)
 
     }
     char num[255] = {0};
-    sprintf(num, "%4zu", ochko_andreja);
+    sprintf(num, "%4i", ochko_andreja);
     SDL_Surface* pointsurface = TTF_RenderText_Solid(f, num, (SDL_Color) {255, 255, 255, 0});
     SDL_Texture* txt = SDL_CreateTextureFromSurface(renderer, pointsurface);
     SDL_Rect r = {700, 0, 100, 50};
@@ -180,14 +180,13 @@ void drawMainObjects(SDL_Renderer *renderer)
 }
 
 
-void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start, SDL_Texture *cat)
+void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start)
 {
     SDL_Rect LogoPos = {200, 10, 480,32};
     SDL_RenderCopy(renderer, logo, NULL, &LogoPos);
     SDL_Rect StartPos = {160, 100, 480,32};
     SDL_RenderCopy(renderer, start, NULL, &StartPos);
-    SDL_Rect CatPos = {160, 142, 480,480};
-    SDL_RenderCopy(renderer, cat, NULL, &CatPos);
+
 }
 
 void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver, SDL_Texture *restartScreen)
@@ -260,13 +259,11 @@ int main(int argc, char *argv[])
         SDL_Texture *cursorTexture = NULL;
         SDL_Texture *logo = NULL;
         SDL_Texture *start = NULL;
-        SDL_Texture *cat = NULL;
         SDL_Texture *gameOverScreen = NULL;
         SDL_Texture *restarScreen = NULL;
         loadTexture(&cursorTexture, renderer, "../Sprites/Coursor.png");
         loadTexture(&logo, renderer, "../Sprites/Team Logo.png");
         loadTexture(&start, renderer, "../Sprites/StartGame.png");
-        loadTexture(&cat, renderer, "../Sprites/cat.png");
         loadTexture(&gameOverScreen, renderer, "../Sprites/GameOver.png");
         loadTexture(&restarScreen, renderer, "../Sprites/PressRToRestart.png");
 
@@ -285,6 +282,11 @@ int main(int argc, char *argv[])
 
                 for (int i = 0; i < man_num; i++) {
                     if (mane[i].dead && ((rand() % 100) == 0)) {
+                        ochko_andreja -= 2 * 5;
+                        mane[i] = spawn_man(bases, rand() & 4);
+                    }
+                    if (mane[i].is_home && ((rand() % 100) == 0)) {
+                        ochko_andreja += 5;
                         mane[i] = spawn_man(bases, rand() & 4);
                     }
                 }
@@ -318,22 +320,28 @@ int main(int argc, char *argv[])
                 }
 
 
-                switch (state) {
+                switch (state)
+                {
                     case mainMenu:
                         //state = game;
                         SDL_RenderClear(renderer);
-                        drawMainMenu(renderer, logo, start, cat);
+                        drawMainMenu(renderer, logo, start);
                         drawCoursor(renderer, cursorTexture);
                         SDL_RenderPresent(renderer);
                         break;
                     case game:
-                        for (int i = 0; i < cherti_num; ++i) {
-                            if (update_chort((SDL_Rect) {350, 250, 80, 80}, cherti + i, mouse_pressed))
+                        for (int i = 0; i < cherti_num; ++i)
+                        {
+                            if (update_chort((SDL_Rect) {350, 250, 80, 80}, renderer, cherti + i, mouse_pressed))
+                            {
                                 state = gameOver;
+                            }
                         }
-                        for (int i = 0; i < man_num; ++i) {
-                            if (update_man((SDL_Rect) {350, 250, 80, 80}, mane + i, mouse_pressed)) {
-                                mane[i].dead = 1;
+                        for (int i = 0; i < man_num; ++i)
+                        {
+                            if (update_man((SDL_Rect) {350, 250, 80, 80}, mane + i, mouse_pressed))
+                            {
+                                //mane[i].dead = 1;
                             }
                         }
 
@@ -367,7 +375,6 @@ int main(int argc, char *argv[])
             SDL_DestroyTexture(cursorTexture);
             SDL_DestroyTexture(logo);
             SDL_DestroyTexture(start);
-            SDL_DestroyTexture(cat);
             SDL_DestroyTexture(gameOverScreen);
             SDL_DestroyTexture(restarScreen);
             IMG_Quit();

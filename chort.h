@@ -17,9 +17,9 @@ int contains(SDL_Rect r, SDL_Point p);
 
 SDL_Point find_path(SDL_Rect castle, struct chort_t * chort);
 
-int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed) ;
+int update_chort(SDL_Rect castle, SDL_Renderer *renderer, struct chort_t  *chort, int mousepressed);
 
-void draw_chort(SDL_Renderer* r, struct chort_t * chort);
+void draw_chort(SDL_Renderer *r, struct chort_t *chort);
 
 int loadTextureArray(SDL_Renderer* renderer, const char** fileNames, int arraySize, SDL_Texture** textureArray);
 
