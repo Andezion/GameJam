@@ -307,7 +307,7 @@ int main(int argc, char *argv[])
                         state = gameOver;
                 }
                 for (int i = 0; i < man_num; ++i) {
-......1                    if (update_man((SDL_Rect){350, 250, 80, 80}, mane+i, mouse_pressed))
+                   if (update_man((SDL_Rect){350, 250, 80, 80}, mane+i, mouse_pressed))
                     {
                         mane[i].dead = 1;
                     }
