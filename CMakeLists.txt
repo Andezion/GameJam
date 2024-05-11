@@ -16,5 +16,5 @@ add_executable(GameJam main.c
         chort.c
         chort.h man.c man.h)
 
-target_link_libraries(GameJam SDL2main SDL2 SDL2_image SDL2_ttf)
+target_link_libraries(GameJam SDL2main SDL2 SDL2_image SDL2_ttf SDL2_mixer)
 

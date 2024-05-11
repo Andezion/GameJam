@@ -1,8 +1,9 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL_image.h>
-#include <SDL2\SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include "chort.h"
 #include "man.h"
 
@@ -213,11 +214,15 @@ int main(int argc, char *argv[])
                             {50,  500, 50, 50},
                             {700, 500, 50, 50}};
         SDL_Init(SDL_INIT_EVERYTHING);
+        Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 );
         IMG_Init(IMG_INIT_PNG);
         TTF_Init();
         int restartFlag = 0;
         enum STATE state = mainMenu;
         SDL_ShowCursor(SDL_DISABLE);
+        Mix_Music* pem = Mix_LoadMUS("../Sprites/test.mp3");
+        Mix_Music* main_game = Mix_LoadMUS("../Sprites/pduch.mp3");
+        Mix_Music* end_game = Mix_LoadMUS("../Sprites/end.mp3");
 
         int pick[40][30];
         for (int i = 0; i < 40; i++) {
@@ -299,6 +304,7 @@ int main(int argc, char *argv[])
                         int x, y;
                         SDL_GetMouseState(&x, &y);
                         if (x > 160 && x < 640 && y > 100 && y < 132) {
+                            Mix_PlayMusic(main_game, -1);
                             state = game;
                             timeStart = SDL_GetTicks();
                         }
@@ -328,12 +334,14 @@ int main(int argc, char *argv[])
                         drawMainMenu(renderer, logo, start);
                         drawCoursor(renderer, cursorTexture);
                         SDL_RenderPresent(renderer);
+                        if( Mix_PlayingMusic() == 0 ) Mix_PlayMusic(pem, -1);
                         break;
                     case game:
                         for (int i = 0; i < cherti_num; ++i)
                         {
                             if (update_chort((SDL_Rect) {350, 250, 80, 80}, renderer, cherti + i, mouse_pressed))
                             {
+                                Mix_PlayMusic(end_game, -1);
                                 state = gameOver;
                             }
                         }
@@ -358,11 +366,13 @@ int main(int argc, char *argv[])
                         drawCoursor(renderer, cursorTexture);
                         // Тут конец отрисовки
                         SDL_RenderPresent(renderer);
+                        if( Mix_PlayingMusic() == 0 ) Mix_PlayMusic(main_game, -1);
                         break;
                     case gameOver:
                         SDL_RenderClear(renderer);
                         drawGameOver(renderer, gameOverScreen, restarScreen);
                         SDL_RenderPresent(renderer);
+                        if( Mix_PlayingMusic() == 0 ) Mix_PlayMusic(end_game, -1);
                         break;
                     default:
                         return 5;
@@ -377,8 +387,6 @@ int main(int argc, char *argv[])
             SDL_DestroyTexture(start);
             SDL_DestroyTexture(gameOverScreen);
             SDL_DestroyTexture(restarScreen);
-            IMG_Quit();
-            SDL_Quit();
             if (!running)
                 return 0;
 
