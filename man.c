@@ -5,24 +5,29 @@
 SDL_Texture *texture_man[4];
 const char *man[4] = {"../Sprites/man1.bmp", "../Sprites/man2.bmp", "../Sprites/man1.bmp", "../Sprites/man3.bmp"};
 
-struct man_t spawn_man(SDL_Rect base)
+struct man_t spawn_man(SDL_Rect* base, int num)
 {
+    SDL_Rect* nextbase = (base + num + 1);
+    if (num == 3) {
+        nextbase = base;
+    }
     struct man_t mane;
-    mane.man = base;
+    mane.man = base[num];
     mane.man.h = 35;
     mane.man.w = 35;
     mane.num = 0;
     mane.dead = 0;
+    mane.base = nextbase;
     return mane;
 }
 
-SDL_Point find_path_man(SDL_Rect castle, struct man_t *mane)
+SDL_Point find_path_man(struct man_t *mane)
 {
     SDL_Point res = {0, 0};
     int dir = rand() % 2;
     if (dir == 0)
     {
-        int kierunek = castle.x - mane->man.x;
+        int kierunek = mane->base->x - mane->man.x;
         if (kierunek < 0)
         {
             res.x = -1;
@@ -35,7 +40,7 @@ SDL_Point find_path_man(SDL_Rect castle, struct man_t *mane)
     }
     else
     {
-        int kierunek = castle.y - mane->man.y;
+        int kierunek = mane->base->y - mane->man.y;
         if (kierunek < 0)
         {
             res.y = -1;
@@ -56,7 +61,7 @@ int update_man(SDL_Rect castle, struct man_t *mane, int mousepressed)
         return 0;
     }
 
-    if(intersect(castle, mane->man))
+    if(intersect(*mane->base, mane->man))
     {
         return 1;
     }
@@ -71,9 +76,10 @@ int update_man(SDL_Rect castle, struct man_t *mane, int mousepressed)
         }
     }
 
-    SDL_Point kierunek = find_path_man(castle, mane);
+    SDL_Point kierunek = find_path_man(mane);
     mane->man.x += kierunek.x * 2;
     mane->man.y += kierunek.y * 2;
+    return 0;
 }
 
 void draw_man(SDL_Renderer *r, struct man_t *mane)

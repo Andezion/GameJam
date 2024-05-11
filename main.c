@@ -1,8 +1,9 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 #include "chort.h"
+#include "man.h"
 
 // Константы
 int HEIGHT = 800;
@@ -201,9 +202,11 @@ int main(int argc, char *argv[])
     }
 
     struct chort_t cherti[10] = {0};
+    struct man_t mane[10] = {0};
+    int man_num = 4;
     int cherti_num = 4;
     int chortAmount;
-    SDL_Window *window = SDL_CreateWindow("GameJam", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow("GameJam", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_OPENGL);
     if (window == NULL)
     {
         printf("Error in creating window: %s\n", SDL_GetError());
@@ -221,6 +224,11 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < cherti_num; ++i) {
         cherti[i] = spawn_chort(bases[rand() % 4]);
+    }
+
+    for(int i = 0; i < man_num; i++)
+    {
+        mane[i] = spawn_man(bases, rand() % 4);
     }
 
     // Загружаем Изображения
@@ -246,6 +254,14 @@ int main(int argc, char *argv[])
                 cherti[i] = spawn_chort(bases[rand() % 4]);
             }
         }
+
+        for(int i = 0; i < man_num; i++)
+        {
+            if(mane[i].dead && ((rand() % 100) == 0))
+            {
+                mane[i] = spawn_man(bases, rand() & 4);
+            }
+        }
         int mouse_pressed = 0;
         while(SDL_PollEvent(&event))
         {
@@ -260,7 +276,7 @@ int main(int argc, char *argv[])
                 if (x > 160 && x < 640 && y > 100 && y < 132)
                 {
                     state = game;
-                    timeStart = SDL_GetTicks64();
+                    timeStart = SDL_GetTicks();
                 }
             }
             if (event.type == SDL_MOUSEBUTTONDOWN) {
@@ -290,6 +306,12 @@ int main(int argc, char *argv[])
                     if (update_chort((SDL_Rect){350, 250, 80, 80}, cherti+i, mouse_pressed))
                         state = gameOver;
                 }
+                for (int i = 0; i < man_num; ++i) {
+......1                    if (update_man((SDL_Rect){350, 250, 80, 80}, mane+i, mouse_pressed))
+                    {
+                        mane[i].dead = 1;
+                    }
+                }
 
                 SDL_RenderClear(renderer);
                 // Тут начало отрисовки
@@ -297,6 +319,10 @@ int main(int argc, char *argv[])
                 drawMainObjects(renderer);
                 for (int i = 0; i < cherti_num; ++i) {
                     draw_chort(renderer, cherti+i);
+                }
+                for(int i = 0; i < man_num; i++)
+                {
+                    draw_man(renderer, mane + i);
                 }
                 drawCoursor(renderer, cursorTexture);
                 // Тут конец отрисовки
