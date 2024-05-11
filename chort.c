@@ -126,6 +126,9 @@ void draw_chort(SDL_Renderer *r, struct chort_t *chort)
     }
     loadTextureArray(r, robot, 4, texture_robot);
     SDL_RenderCopy(r, texture_robot[chort->num % 4], NULL, &chort->chort);
+    for (int i = 0; i < 4; ++i) {
+        SDL_DestroyTexture(texture_robot[i]);
+    }
     chort->num = (chort->num + 1) % 4;
 
     for(int i = 0; i < 4; i++)
