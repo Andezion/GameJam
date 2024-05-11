@@ -12,6 +12,8 @@ struct chort_t spawn_chort(SDL_Rect base);
 
 int intersect(SDL_Rect r1, SDL_Rect r2);
 
+int contains(SDL_Rect r, SDL_Point p);
+
 SDL_Point find_path(SDL_Rect castle, struct chort_t * chort);
 
 int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed) ;

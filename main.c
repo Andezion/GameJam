@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <SDL_image.h>
 #include "chort.h"
+#include "man.h"
 
 // Константы
 int HEIGHT = 800;
@@ -197,6 +198,7 @@ int main(int argc, char *argv[])
     }
 
     struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
+    struct man_t mane = spawn_man((SDL_Rect){50, 50, 50, 70});
     int chortAmount;
     SDL_Window *window = SDL_CreateWindow("GameJam", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
@@ -280,6 +282,7 @@ int main(int argc, char *argv[])
                 drawMainObjects(renderer);
                 drawCoursor(renderer, cursorTexture);
                 draw_chort(renderer, &chort);
+                draw_man(renderer, &mane);
                 // Тут конец отрисовки
                 SDL_RenderPresent(renderer);
                 break;

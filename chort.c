@@ -2,10 +2,7 @@
 #include <stdio.h>
 
 SDL_Texture *texture_robot[4];
-SDL_Texture *texture_man[4];
-
 const char *robot[4] = {"../Sprites/robot1.bmp", "../Sprites/robot2.bmp", "../Sprites/robot1.bmp", "../Sprites/robot3.bmp"};
-const char *man[4] = {"../Sprites/man1.bmp", "../Sprites/man2.bmp", "../Sprites/man1.bmp", "../Sprites/man3.bmp"};
 
 struct chort_t spawn_chort(SDL_Rect base)
 {
@@ -112,8 +109,8 @@ int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
         }
     }
     SDL_Point kierunek = find_path(castle, chort);
-    chort->chort.x += kierunek.x * 5;
-    chort->chort.y += kierunek.y * 5;
+    chort->chort.x += kierunek.x * 2;
+    chort->chort.y += kierunek.y * 2;
 
     return 0;
 }
