@@ -1,6 +1,6 @@
 #ifndef GAMEJAM_MAN_H
 #define GAMEJAM_MAN_H
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 struct man_t
 {
