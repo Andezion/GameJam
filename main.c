@@ -334,7 +334,7 @@ int main(int argc, char *argv[])
                             timeStart = SDL_GetTicks();
                         }
                     }
-                    if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_r && state == gameOver) {
+                    if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_r && state == gameOver) {
                         goto exit;
                     }
 
@@ -412,6 +412,7 @@ int main(int argc, char *argv[])
             SDL_DestroyTexture(start);
             SDL_DestroyTexture(gameOverScreen);
             SDL_DestroyTexture(restarScreen);
+            Mix_PlayMusic(pem, -1);
             if (!running)
                 return 0;
 
