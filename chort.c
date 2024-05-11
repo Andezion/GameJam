@@ -107,8 +107,10 @@ int update_chort(SDL_Rect castle, struct chort_t  *chort, int mousepressed){
     SDL_Point mouse;
     if (mousepressed) {
         SDL_GetMouseState(&mouse.x, &mouse.y);
-        if (contains(chort->chort, mouse)) {
+        if (contains(chort->chort, mouse))
+        {
             chort->dead = 1;
+
         }
     }
     SDL_Point kierunek = find_path(castle, chort);
