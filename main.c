@@ -1,7 +1,7 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include "chort.h"
 #include "man.h"
 
@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
         int mouse_pressed = 0;
         while(SDL_PollEvent(&event))
         {
-            if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_q)
+            if (event.type == SDL_QUIT )
             {
                 running = 0;
             }
