@@ -179,14 +179,39 @@ void drawMainObjects(SDL_Renderer *renderer)
     SDL_DestroyTexture(txt);
 }
 
+int current_hit_up = 0;
+int current_hit_up1 = 0;
 
 void drawMainMenu(SDL_Renderer *renderer, SDL_Texture *logo, SDL_Texture *start)
 {
-    SDL_Rect LogoPos = {200, 10, 480,32};
+    SDL_Texture *texture_for_standing_in_plus[4];
+    const char *standing_files_in_plus[4] = {"../Sprites/bot_down1.bmp", "../Sprites/bot_down2.bmp", "../Sprites/bot_down1.bmp", "../Sprites/bot_down2.bmp"};
+    if(loadTextureArray(renderer, standing_files_in_plus, 4, texture_for_standing_in_plus) != 0)
+    {
+        return;
+    }
+    SDL_Rect hut = {300, 400, 150, 150};
+    SDL_RenderCopy(renderer, texture_for_standing_in_plus[current_hit_up % 4], NULL, &hut);
+    current_hit_up = (current_hit_up + 1) % 4;
+
+    SDL_Texture *texture_for[4];
+    const char *standing_files[4] = {"../Sprites/stand1.bmp", "../Sprites/stand2.bmp", "../Sprites/stand2.bmp", "../Sprites/stand1.bmp"};
+    if(loadTextureArray(renderer, standing_files, 4, texture_for) != 0)
+    {
+        return;
+    }
+    SDL_Rect hut1 = {100, 400, 170, 150};
+    SDL_RenderCopy(renderer, texture_for[current_hit_up1 % 4], NULL, &hut1);
+    current_hit_up1 = (current_hit_up1 + 1) % 4;
+
+    SDL_Delay(100);
+
+    SDL_Rect LogoPos = {200, 10, 480, 32};
     SDL_RenderCopy(renderer, logo, NULL, &LogoPos);
     SDL_Rect StartPos = {160, 100, 480,32};
     SDL_RenderCopy(renderer, start, NULL, &StartPos);
 
+    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 100);
 }
 
 void drawGameOver(SDL_Renderer *renderer, SDL_Texture *gameOver, SDL_Texture *restartScreen)
