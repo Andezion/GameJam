@@ -1,15 +1,19 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <SDL2/SDL_image.h>
+#include <SDL_image.h>
 #include "chort.h"
 
 // Константы
 int HEIGHT = 800;
 int WIDTH = 600;
 int CURSORSIZE = 32;
+int MAXCHORTAMOUNT = 32;
 
 int pick;
+unsigned long long timeStart;
+unsigned long long timeFromSpawn;
+
 
 enum STATE {mainMenu, game, gameOver};
 
@@ -183,6 +187,7 @@ int main(int argc, char *argv[])
     pick = 1 + rand() % 6;
 
     struct chort_t chort = spawn_chort((SDL_Rect){50, 500, 50, 50});
+    int chortAmount;
     SDL_Window *window = SDL_CreateWindow("Knight", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, HEIGHT, WIDTH, SDL_WINDOW_RESIZABLE);
     if (window == NULL)
     {
@@ -211,7 +216,6 @@ int main(int argc, char *argv[])
     loadTexture(&cat, renderer, "../Sprites/cat.png");
     loadTexture(&gameOverScreen, renderer, "../Sprites/GameOver.png");
 
-
     SDL_Event event;
 
     int running = 1;
@@ -230,9 +234,10 @@ int main(int argc, char *argv[])
                 if (x > 160 && x < 640 && y > 100 && y < 132)
                 {
                     state = game;
+                    timeStart = SDL_GetTicks64();
                 }
             }
-            if(event.type == SDL_MOUSEBUTTONDOWN && state == game)
+            if(event.type == SDL_MOUSEBUTTONUP && state == game)
             {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
@@ -240,6 +245,13 @@ int main(int argc, char *argv[])
                     chort.dead = 1;
 
             }
+
+        }
+
+        // Ебля со временем
+        unsigned long long currentTime = SDL_GetTicks64();
+        if(currentTime - timeFromSpawn > 2500)
+        {
 
         }
 
