@@ -135,7 +135,6 @@ void drawMainObjects(SDL_Renderer *renderer)
 
     SDL_Rect base4 = {700, 500, 50, 50};
     SDL_RenderCopy(renderer, texture, 0, &base4);
-    SDL_DestroyTexture(texture);
 
     SDL_Surface *dupka = SDL_LoadBMP("../Sprites/dante.bmp");
     if (dupka == NULL)
@@ -156,8 +155,6 @@ void drawMainObjects(SDL_Renderer *renderer)
 
     SDL_Rect main_fortress = {350, 250, 80, 80};
     SDL_RenderCopy(renderer, texturka, 0, &main_fortress);
-    SDL_FreeSurface(dupka);
-    SDL_DestroyTexture(texturka);
 }
 
 
