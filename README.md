@@ -1,6 +1,5 @@
 # Dante Saviour
 This is endless, singleplayer Tower-defence game with creative story!!!
-
 ## Table of contents
 * [General info](#general-info)
 * [Inspiration](#insp)
