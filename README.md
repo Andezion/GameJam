@@ -13,6 +13,8 @@ This game was written entirely in C, using the SDL library to implement graphics
 ---
 ## Gameplay
 
+https://github.com/Andezion/GameJam/assets/115638748/12bd237b-e1cb-425e-b9a1-f8f060352963
+
 ---
 ## Inspiration
 - Duck Hunt
