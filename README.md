@@ -12,7 +12,9 @@ This game introduces us to Dante's servers, which need to be protected from evil
 This game was written entirely in C, using the SDL library to implement graphics, music, and user interaction. Paint, Photoshop and Gimp were used to draw the models. Music was found by Timur, thanks to him!
 ---
 ## Gameplay
-https://github.com/Andezion/GameJam/assets/115638748/a7c967e1-ceb3-4eb5-8f8d-1e9fd55023f5
+<video width="100%" controls>
+  <source src="https://github.com/Andezion/GameJam/assets/115638748/a7c967e1-ceb3-4eb5-8f8d-1e9fd55023f5" type="video/mp4">
+</video>
 ---
 ## Inspiration
 - Duck Hunt
